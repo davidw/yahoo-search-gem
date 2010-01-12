@@ -1,0 +1,12 @@
+= 1.1.1
+
+* Upgraded to rc-rest 2.0.0 and yahoo 1.1.1
+
+= 1.1.0
+
+* Lost to time
+
+= 1.0.0
+
+* Birthday
+
