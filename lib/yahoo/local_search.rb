@@ -59,40 +59,39 @@ class Yahoo::LocalSearch < Yahoo::Search
   def parse_response(xml) # :nodoc:
     search_results = []
 
-    result_set_map_url = URI.parse xml.elements['ResultSet/ResultSetMapUrl'].text
+    result_set_map_url = URI.parse(xml.at_xpath('//xmlns:ResultSetMapUrl').content)
     total_results_available, total_results_returned, first_result_position =
-      parse_result_info xml
+      parse_result_info(xml)
 
-    xml.elements['ResultSet'].each do |r|
-      next unless r.name == 'Result'
+    xml.xpath('//xmlns:Result').each do |r|
       sr = Result.new
 
-      sr.id        = r.attributes['id'].to_i
-      sr.title     = r.elements['Title'].text
-      sr.address   = r.elements['Address'].text
-      sr.city      = r.elements['City'].text
-      sr.state     = r.elements['State'].text
-      sr.phone     = r.elements['Phone'].text
-      sr.latitude  = r.elements['Latitude'].text.to_f
-      sr.longitude = r.elements['Longitude'].text.to_f
+      sr.id        = r['id'].to_i
+      sr.title     = r.at_xpath('xmlns:Title').content
+      sr.address   = r.at_xpath('xmlns:Address').content
+      sr.city      = r.at_xpath('xmlns:City').content
+      sr.state     = r.at_xpath('xmlns:State').content
+      sr.phone     = r.at_xpath('xmlns:Phone').content
+      sr.latitude  = r.at_xpath('xmlns:Latitude').content.to_f
+      sr.longitude = r.at_xpath('xmlns:Longitude').content.to_f
 
-      rating = r.elements['Rating']
-      sr.average_rating    = rating.elements['AverageRating'].text.to_f
-      sr.total_ratings     = rating.elements['TotalRatings'].text.to_i
-      sr.total_reviews     = rating.elements['TotalReviews'].text.to_i
-      sr.last_review_date  = Time.at rating.elements['LastReviewDate'].text.to_i
-      sr.last_review_intro = rating.elements['LastReviewIntro'].text
+      rating = r.at_xpath('xmlns:Rating')
+      sr.average_rating    = rating.at_xpath('xmlns:AverageRating').content.to_f
+      sr.total_ratings     = rating.at_xpath('xmlns:TotalRatings').content.to_i
+      sr.total_reviews     = rating.at_xpath('xmlns:TotalReviews').content.to_i
+      sr.last_review_date  = Time.at rating.at_xpath('xmlns:LastReviewDate').content.to_i
+      sr.last_review_intro = rating.at_xpath('xmlns:LastReviewIntro').content
 
-      sr.distance           = r.elements['Distance'].text.to_f
-      sr.url                = URI.parse r.elements['Url'].text
-      sr.click_url          = URI.parse r.elements['ClickUrl'].text
-      sr.map_url            = URI.parse r.elements['MapUrl'].text
-      sr.business_url       = URI.parse r.elements['BusinessUrl'].text
-      sr.business_click_url = URI.parse r.elements['BusinessClickUrl'].text
+      sr.distance           = r.at_xpath('xmlns:Distance').content.to_f
+      sr.url                = URI.parse r.at_xpath('xmlns:Url').content
+      sr.click_url          = URI.parse r.at_xpath('xmlns:ClickUrl').content
+      sr.map_url            = URI.parse r.at_xpath('xmlns:MapUrl').content
+      sr.business_url       = URI.parse r.at_xpath('xmlns:BusinessUrl').content
+      sr.business_click_url = URI.parse r.at_xpath('xmlns:BusinessClickUrl').content
 
       sr.categories = {}
-      r.elements['Categories'].each do |c|
-        sr.categories[c.text] = c.attributes['id'].to_i
+      r.xpath('.//xmlns:Category').each do |c|
+        sr.categories[c.content] = c['id'].to_i
       end
 
       search_results << sr

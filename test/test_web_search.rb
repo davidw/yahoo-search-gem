@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'rubygems'
 require 'rc_rest/uri_stub'
 require 'yahoo/web_search'
 

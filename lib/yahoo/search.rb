@@ -5,17 +5,17 @@ require 'yahoo'
 
 class Yahoo::Search < Yahoo
 
-  VERSION = '1.1.1'
+  VERSION = '2.0.0'
 
   ##
   # Returns the total results available, returned, and first result position
   # for the returned results.
 
   def parse_result_info(xml) # :nodoc:
-    rs = xml.elements['ResultSet']
-    total_results_available = rs.attributes['totalResultsAvailable'].to_i
-    total_results_returned  = rs.attributes['totalResultsReturned'].to_i
-    first_result_position   = rs.attributes['firstResultPosition'].to_i
+    rs = xml.at_xpath('//xmlns:ResultSet')
+    total_results_available = rs['totalResultsAvailable'].to_i
+    total_results_returned  = rs['totalResultsReturned'].to_i
+    first_result_position   = rs['firstResultPosition'].to_i
 
     return total_results_available, total_results_returned,
            first_result_position

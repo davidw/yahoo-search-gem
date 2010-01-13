@@ -37,18 +37,17 @@ class Yahoo::WebSearch < Yahoo::Search
     total_results_available, total_results_returned, first_result_position =
       parse_result_info xml
 
-    xml.elements['ResultSet'].each do |r|
-      next if REXML::Text === r
+    xml.xpath('//xmlns:Result').each do |r|
       result = Result.new
 
-      result.title             = r.elements['Title'].text
-      result.summary           = r.elements['Summary'].text
-      result.url               = URI.parse r.elements['Url'].text
-      result.click_url         = URI.parse r.elements['ClickUrl'].text
-      result.mime_type         = r.elements['MimeType'].text
-      result.modification_date = Time.at r.elements['ModificationDate'].text.to_i
-      result.cache_url         = URI.parse r.elements['Cache/Url'].text
-      result.cache_size        = r.elements['Cache/Size'].text.to_i
+      result.title             = r.at_xpath('xmlns:Title').content
+      result.summary           = r.at_xpath('xmlns:Summary').content
+      result.url               = URI.parse(r.at_xpath('xmlns:Url').content)
+      result.click_url         = URI.parse(r.at_xpath('xmlns:ClickUrl').content)
+      result.mime_type         = r.at_xpath('xmlns:MimeType').content
+      result.modification_date = Time.at(r.at_xpath('xmlns:ModificationDate').content.to_i)
+      result.cache_url         = URI.parse(r.at_xpath('xmlns:Cache/xmlns:Url').content)
+      result.cache_size        = r.at_xpath('xmlns:Cache/xmlns:Size').content.to_i
 
       search_results << result
     end
