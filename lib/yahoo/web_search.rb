@@ -46,8 +46,11 @@ class Yahoo::WebSearch < Yahoo::Search
       result.click_url         = URI.parse(r.at_xpath('xmlns:ClickUrl').content)
       result.mime_type         = r.at_xpath('xmlns:MimeType').content
       result.modification_date = Time.at(r.at_xpath('xmlns:ModificationDate').content.to_i)
-      result.cache_url         = URI.parse(r.at_xpath('xmlns:Cache/xmlns:Url').content)
-      result.cache_size        = r.at_xpath('xmlns:Cache/xmlns:Size').content.to_i
+      cacheurl = r.at_xpath('xmlns:Cache/xmlns:Url')
+      if cacheurl
+        result.cache_url         = URI.parse(cacheurl.content)
+        result.cache_size        = r.at_xpath('xmlns:Cache/xmlns:Size').content.to_i
+      end
 
       search_results << result
     end
