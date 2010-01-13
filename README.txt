@@ -1,12 +1,12 @@
 = yahoo-search
 
-Rubyforge Project:
+Github Project:
 
-http://rubyforge.org/projects/rctools/
+http://github.com/davidw/yahoo-search-gem
 
 Documentation:
 
-http://dev.robotcoop.com/Libraries/yahoo-search/
+FIXME
 
 == About
 

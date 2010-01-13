@@ -1,3 +1,8 @@
+= 2.0.0
+
+* New maintainer: davidw@dedasys.com
+* Depend on rc-rest >= 3.0.0 and utilize Nokogiri
+
 = 1.1.1
 
 * Upgraded to rc-rest 2.0.0 and yahoo 1.1.1

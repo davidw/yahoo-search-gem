@@ -7,13 +7,13 @@ DEV_DOC_PATH = 'Libraries/yahoo-search'
 hoe = Hoe.new 'yahoo-search', Yahoo::Search::VERSION do |p|
   p.summary = 'A Ruby Yahoo Search API Implementation'
   p.description = 'An interface to Yahoo\'s Search services.'
-  p.author = 'Eric Hodel'
-  p.email = 'drbrain@segment7.net'
-  p.url = "http://dev.robotcoop.com/#{DEV_DOC_PATH}"
+  p.author = 'David N. Welton'
+  p.email = 'davidw@dedasys.com'
+  p.url = "http://github.com/davidw/yahoo-search-gem"
   p.changes = File.read('History.txt').scan(/\A(=.*?)^=/m).first.first
   p.rubyforge_name = 'rctools'
 
-  p.extra_deps << ['yahoo', '>= 1.1.1']
+  p.extra_deps << ['yahoo', '>= 2.0.0']
 end
 
 SPEC = hoe.spec
